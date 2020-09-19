@@ -1,4 +1,6 @@
 #include<iostream>
+#include<map>
+#include<windows.h>
 using namespace std;
 
 class helpline_team
@@ -6,7 +8,7 @@ class helpline_team
     public:
     helpline_team()
     {
-    	cout<<"\n\n\t\t\t\t\t\t Log-in \n\n";
+		cout<<"\n\n\t\t\t\t\t\t Log-in \n\n";
 	}
 	~helpline_team()
 	{} 
@@ -25,7 +27,7 @@ class helpline_team
         cin>>userName;
         cout<<"\n Please enter your user password: ";
         cin>>userPassword;
-
+        
         if (userName == "Tadeeb" && userPassword == "T@covid19")
         {
         cout<<"\n\n\n\t\t\t\t\t\t Welcome Tadeeb!\n";
@@ -123,6 +125,7 @@ class patient_info : protected helpline_team
 		float DNA_enzyme,RNA_enzyme,nucleotide;
 		void registration()
 		{
+			cout<<"\n\n\n\t\t\t\t\t\t Patient registration forum.";
 			cout<<"\n\n\n Enter your name: ";
 			cin>>name;
 			cout<<"\n Enter your fathers name: ";
@@ -144,14 +147,14 @@ class patient_info : protected helpline_team
 		void test()
 		{
 			float fluroscense = 15.6;
-			cout<<"\n\n\n\n\t\t\t\t Lab, Test in progress";
+			cout<<"\n\n\n\n\t\t\t\t\t\t Lab, Test in progress";
 			cout<<"\n\n\n\n Enter patient DNA enzyme %: ";
 			cin>>DNA_enzyme;
 			cout<<"\n Enter patient RNA enzyme %: ";
 			cin>>RNA_enzyme;
 			cout<<"\n Enter patient Nucleotide level: ";
 			cin>>nucleotide;
-	
+	        cout<<"\n\n Fluroscense % in sample: "<<(3*DNA_enzyme/RNA_enzyme)-nucleotide<<" %\n";
 		    if (fluroscense == (3*DNA_enzyme/RNA_enzyme)-nucleotide)
 		    {
 		    	cout<<"\n Unable to identify, needs COVID-SARS_virus Retest";
@@ -163,22 +166,25 @@ class patient_info : protected helpline_team
 		    else if (fluroscense <= (3*DNA_enzyme/RNA_enzyme)-nucleotide)
 			{
 		    	cout<<"\n Patient is POSITIVE";
+		        if ((3*DNA_enzyme/RNA_enzyme)-nucleotide > 90.6 )
+			    {
+				cout<<"\n\n Patient is highly impacted with COVID-19";
+		        	string a,b;
+		        	a = "City Lab";
+	                b = "Sanjeevni Lab";
+					string *x=&a,*y=&b,t;
+					t = *x;
+					*x = *y;
+					*y = t;
+					cout<<"\n\n Our lab treats moderate patients, You can refer to: "<<b; 		
+			    }
 			}
-			else if ((3*DNA_enzyme/RNA_enzyme)-nucleotide > 90.5)
-			{
-				cout<<"\n Patient is highly impacted with COVID-19";
-				
-			}
-		        cout<<"\n Fluroscense % in sample: "<<(3*DNA_enzyme/RNA_enzyme)-nucleotide;
 		}
-//		float intensity()
-//		{
-//			return 3*DNA_enzyme/RNA_enzyme)-nucleotide
-//		}
 	protected:
 	    void timeSlots()
 		{
-			string m1 = "9-10AM",m2 = "10-11AM",m3 = "11-12noon",m4 = "12-1PM",e1 = "2-3PM",e2 = "3-4PM",e3 = "4-5PM",e4 = "5-6PM";	
+			string morning[4] = {"9-10AM","10-11AM","11-12noon","12-1PM"};
+			string evening[4] = {"2-3PM","3-4PM","4-5PM","5-6PM"};	
 		}	
 		void call_1()
 		{
@@ -189,24 +195,49 @@ class patient_info : protected helpline_team
 class lab_info : public patient_info
 {
 	public:
-		void chemical()
+		void display_info()
 		{
-			string chem_list[] = {"hydroxyquinoquine","Acetaminophen","Haloperidol","Esomeprazole","Pseudoephedrine","Favipiravir (T-705)","Remdesivir"};
-			for(int i=0;i<7;i++)
+			chemical();
+		}
+		~lab_info()
+		{}
+	protected:
+		void chemical()
+		{		
+			//Create dictionary here.
+			string i;
+			std::map< string , string > chem_list;
+			chem_list.insert(pair<string , string>("a","Acetaminophen (500 mL)"));
+			chem_list.insert(pair<string , string>("h","Haloperidol (300 mL)"));
+			chem_list.insert(pair<string , string>("e","Esomeprazole (100 mL)"));
+			cout<<"\n\n\n\t\t\t\t\t Chemicals in lab";
+			cout<<"\n\n Enter an alphabet(a,h,e):-";
+			cin>>i;
+			if (i == "a")
 			{
-				cout<<"\n The chemicals available in the lab";
-				cout<<chem_list[i];
+			   cout<<"\n"<<chem_list[" a"];
 			}
-	}
+			if (i == "h")
+			{
+			   cout<<"\n"<<chem_list[" h"];
+			}
+			if (i == "e")
+			{
+			   cout<<"\n"<<chem_list[" e"];
+			}
+	        }
 };
+
 int main()
 {
+	system("Color C0");
 	lab_info obj1;
-	obj1.chemical();
-//	obj1.display_info();
-//	obj1.registration();
+	obj1.display_msg();
+	obj1.patient_info::display_info();
+	obj1.display_info();
 	return 0;
 }
-        
+       
+    
         
         
