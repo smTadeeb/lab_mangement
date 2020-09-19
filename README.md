@@ -1,6 +1,6 @@
 # Object Oriented Programming
 
-This is part of lab management application made using C++ where I have to use the pillar concepts of Object Oriented Programming i.e.
+**This is part of lab management application made using C++ where I have to use the pillar concepts of Object Oriented Programming i.e.**
 
 * **Abstraction.**
 * **Encapsulation.**
