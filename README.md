@@ -2,15 +2,15 @@
 
 This is part of lab management application made using C++ where I have to use the pillar concepts of Object Oriented Programming i.e.
 
-* **Abstraction.
-* **Encapsulation.
-* **Inheritance.
-* **Polymorphism (compile-time polymorphism).
+* **Abstraction.**
+* **Encapsulation.**
+* **Inheritance.**
+* **Polymorphism (compile-time polymorphism).**
 
 
 ## Lab Management:
 
-**Lab Management is a software-based solution with features that support a modern laboratory operations. Key features include :
+**Lab Management is a software-based solution with features that support a modern laboratory operations. Key features include :**
 
 * Time Slots.
 * Traffic Divergence. 
@@ -20,7 +20,7 @@ This is part of lab management application made using C++ where I have to use th
 
 ## Scope:
 
-**Our app will facilitate the following things:-
+**Our app will facilitate the following things:-**
 
 * Allowing only authorised users to access confidential data. 
 * Patient Information Management.
