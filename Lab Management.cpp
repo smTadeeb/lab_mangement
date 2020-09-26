@@ -2,6 +2,8 @@
 #include<map>
 #include<string>                                                        
 #include<windows.h> 
+#include<conio.h>
+#include <stdexcept> 
 #include<fstream>                                         
 using namespace std;                                           
 
@@ -14,18 +16,26 @@ class helpline_team
     void check()                                            
     	{                                                   
     	int svr;                                           
-    	string userName;                                  
-        string userPassword;
-        int loginAttempt = 0;                            
+    	string userName,userPassword="";
+    	char pw =' ';
+        int loginAttempt = 0;                           
         while (loginAttempt < 2)                         
         {                                               
         cout<<"\n Please enter your user name: ";
         cin>>userName;
         cout<<"\n Please enter your user password: ";
-        cin>>userPassword;                                                         
+	     	while(pw!=13)
+	    {
+		pw = getch();
+		if(pw!=13)
+		{
+		userPassword +=pw;
+		cout<<"*";
+        }
+        }
         if ((userName == "Tadeeb" || userName == "Nipun") && (userPassword == "T@covid19" || userPassword == "N@covid19"))                  
         {                                                                       
-        cout<<"\n\n\n\t\t\t\t\t\t Welcome "<<userName<<" "<<"!\n";                          
+		cout<<"\n\n\n\t\t\t\t\t\t Welcome "<<userName<<" "<<"!\n";                          
 		break;                                                                  
         }                                                                    
         else
@@ -81,7 +91,7 @@ class helpline_team
     }
     }
     protected:	                                                         
-		int A_total_patients,B_total_patients,C_total_patients;           
+		int A_total_patients,B_total_patients,C_total_patients,total;           
 		void call()                                                    
 		{                                                             
 			check();                                                  
@@ -90,7 +100,8 @@ class helpline_team
 		{                                                          
 	 	 A_total_patients = 80;                                   
 		 B_total_patients = 40;                            
-		 C_total_patients = 60;                                
+		 C_total_patients = 60;    
+		 total = A_total_patients + B_total_patients + C_total_patients;                            
 	    }                                                      
 };                                                             
 class patient_info : protected helpline_team               
@@ -104,43 +115,82 @@ class patient_info : protected helpline_team
 		cout<<"\n\n ______________________________________________________Log-in__________________________________________________________ \n\n";                                                                               
 	    call();                                                                          
 		data_frm_ht();
-		cout<<"\n\n\n Total number of patients coming to the different labs are\n\
+		string input;
+		int attempt = 0;
+		while (attempt<5)
+		{
+		cout<<"\n\n\n Do you want to know the nos of patients coming to different labs(y/n) :";
+		cin>>input;
+		if ((input == "y") || (input == "Y"))
+		{
+		cout<<"\n Total number of patients coming to the different labs are\n\
  \n lab Ayur Tests:- "<<A_total_patients;
 		cout<<"\n Sanjeevni Lab.:- "<<B_total_patients;
 		cout<<"\n Bhagwati diagnostics:- "<<C_total_patients;
+		break;
+	    }
+	    else if ((input == "n") || (input == "N"))
+	    {
+	    	cout<<"\n";
+	    	break;
+		}
+		else
+		{
+			cout<<"\n \"Wrong input please put either (y or n)\"";
+	    	attempt++;
+		}
+	    }
 		timeSlots();
 		call_1();
 	    }
     // Abstraction & Encapsulation                                       
-	private:                                                            
-		                        
-		long double age,ph_num,h_num;                                   
-		float DNA_enzyme,RNA_enzyme,nucleotide;                      
+	private:                                                                                    
+		long long int age,ph_num,h_num;                                   
+		float DNA_enzyme,RNA_enzyme,nucleotide;                     
 		void registration()                                          
 		{    
+		 ofstream dbms;
+		 dbms.open("database.txt",ios_base::app);
 		    char f_name[100],name[100],time[100],city[100],address[100];                                           
 			cout<<"\n\n\n ____________________________________________ Patient registration forum _____________________________________________"; 
 			cout<<"\n\n\n Enter your name: ";                      
 		    cin.ignore(); 
-			cin.getline(name,100);                                          
+			cin.getline(name,100);                                  
+			dbms<<name<<endl;
 			cout<<"\n Enter your fathers name: ";                
 		    cin.ignore(); 
 			cin.getline(f_name,100);
+			dbms<<f_name<<endl;
 			cout<<"\n Enter your city & state name: ";      //cin.ignore() before and after and cin.clear()  Ask mam.      
 			cin.ignore();
 			cin.getline(city,100);                                                                 
+			dbms<<city<<endl;
 			cout<<"\n Time alloted to you: ";        
 		    cin.ignore();
 			cin.getline(time,100); 
+			dbms<<time<<endl;
 			cout<<"\n Enter your address: ";          
 			cin.ignore();
 			cin.getline(address,100);                                                            
+			dbms<<address<<endl;
+			try
+			{
 			cout<<"\n Enter your age: ";                     
-			cin>>age;                                    
-			cout<<"\n Enter your phone number: ";          
-			cin>>ph_num;                                                                    
-			cout<<"\n\n Test: For Covid-Sars-19, Kindly submit Rs 2500/- to the counter desk"; 
-			}                                                                            
+			cin>>age;
+			dbms<<" "<<age<<endl;                                  
+			if (cin.fail())      {throw runtime_error("\n Input is not an integer\n");}                                                     
+		    }
+			catch(const runtime_error& e)
+		    {
+		    	cerr<<"\n Invalid Input. Please enter valid input. Its runtime_error ";
+			}
+	        cout<<"\n Enter your phone number: ";          
+			cin>>ph_num;
+			dbms<<ph_num<<endl;  
+			dbms.close(); 
+			cout<<"\n\n Test: For Covid-Sars-19, Kindly submit Rs 2500/- to the counter desk";
+		}
+			     
 		void test()                                                                    
 		{                                                                                
 			float fluroscense = 15.6;                                                  
@@ -177,7 +227,7 @@ class patient_info : protected helpline_team
 			    }
 			}
 		}                                                                      
-	protected:                                                                
+	protected:                                                        
 	    void timeSlots()                                                     
 		{                                                                    
 			string morning[4] = {"9-10AM","10-11AM","11-12noon","12-1PM"};  
@@ -187,7 +237,7 @@ class patient_info : protected helpline_team
 		{                                                              
 			registration();                                            
 			test();                                                  
-		}		                                                       
+		}
 };                                            
 class lab_info : public patient_info        
 {                                          
@@ -225,18 +275,28 @@ class lab_info : public patient_info
 			   cout<<"\n "<<chem_list["e"];                           
 			}                                                       
 	        }
+	    void operator -(int un_reg)  
+	    { cout<<"\n\n Patient data from helpline team: "<<total;
+	      total = total - un_reg;
+	      cout<<"\n Today's unregistered patients: "<<un_reg;
+	      cout<<"\n Data sent to Govt. :"<<total;
+		}
 	private:
 	void operator --()
 	{
+		//int un_reg = 30;
 		lab_info obj1;
 		obj1.patient_info::display_info();
+		obj1.operator -(30);
 		display_info();
-		string a,y,Y;
-		y = "y";
-		Y = "Y";
+		string input2;
+		int attempt2;
+		cout<<"\n\n\n ____________________________________________ Weekly Report of lab ____________________________________________________"; 
+		while(attempt2<5)
+		{
 		cout<<"\n\n\n Do you want to check weekly report(y/n) : ";
-		cin>>a;
-		if (a == y || a == Y)
+		cin>>input2;
+		if (input2 == "y" || input2 == "Y")
 		{
 		string data;
 		ifstream repo;
@@ -246,17 +306,25 @@ class lab_info : public patient_info
 		cout<<"\n"<<data;
 		}
 		repo.close();
+		break;
 	    }
-	    else
+	    else if (input2 == "n" || input2 == "N")
 	    {
 	    	cout<<"\n\n\t\t\t Ok Have a great day.";
 	    	exit(0);
+	    	break;
 		}
+		else
+		{
+			cout<<"\n\n Invalid Entry.Please enter (y/n)";
+			attempt2++;
+		}
+	}
 	} 
 };
 int main()                                    
 {     
-    system("Color C0");                                                      
+    system("Color C0");                                                   
 	lab_info obj1; 
 	obj1.show();                                              
 	return 0;                           
